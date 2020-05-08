@@ -347,7 +347,8 @@ function play(song) {
     radioPlayer.play()
 }
 function playnextsong() {
-	var nextsong=document.getElementById(""+(cursong+1));
+	let index=playlist.findIndex((x)=>x==cursong);
+	var nextsong=document.getElementById(playlist[index+1]);
 	nextsong.click();
 }
 function stopsong() {

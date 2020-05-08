@@ -95,9 +95,11 @@ function updateRow(row) {
 }
 
 function searchSongName(query) {
+	resetplaylist();
     $(".songData .songName").each((index, elem) => {
         if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
+            playlist.push(index)
         }
         else {
             $(elem).addClass("rowHidden");
@@ -107,9 +109,11 @@ function searchSongName(query) {
 }
 
 function searchArtist(query) {
+	resetplaylist();
     $(".songData .songArtist").each((index, elem) => {
         if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
+            playlist.push(index)
         }
         else {
             $(elem).addClass("rowHidden");
@@ -119,15 +123,18 @@ function searchArtist(query) {
 }
 
 function searchAnime(query) {
+	resetplaylist();
     $(".songData .animeNameRomaji").each((index, elem) => {
         if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
             $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
+            playlist.push(index)
         }
         else {
             if (testRegex($(elem).parent().find(".animeNameEnglish").text(), query)) {
                 $(elem).removeClass("rowHidden");
                 $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
+                playlist.push(index)
             }
             else {
                 $(elem).parent().find(".animeNameEnglish").addClass("rowHidden");
@@ -138,25 +145,35 @@ function searchAnime(query) {
     });
 }
 
+let playlist=[]
+function resetplaylist() {
+	playlist=[]
+	stopsong();
+}
+
 function updateTypes() {
+	resetplaylist();
     $(".songData .songType").each((index, elem) => {
         if ($(elem).text().includes("Opening") && $("#slTypeOpenings").hasClass("unchecked")) {
             $(elem).addClass("rowHidden");
         }
         else if ($(elem).text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
             $(elem).removeClass("rowHidden");
+            playlist.push(index)
         }
         else if ($(elem).text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
             $(elem).addClass("rowHidden");
         }
         else if ($(elem).text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
             $(elem).removeClass("rowHidden");
+            playlist.push(index)
         }
         else if ($(elem).text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
             $(elem).addClass("rowHidden");
         }
         else {
             $(elem).removeClass("rowHidden");
+            playlist.push(index)
         }
         updateRow($(elem).parent())
     })
