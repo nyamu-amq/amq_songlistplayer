@@ -79,15 +79,15 @@ function setup() {
         }
     })
 
-    document.body.append(createRadioPlayer())
+    document.body.append(createVideoPlayer())
 }
 
-function createRadioPlayer() {
-    var radioPlayer = document.createElement("audio")
-    radioPlayer.id = "radioPlayer"
-    radioPlayer.onended = playnextsong
-//    radioPlayer.onplaying = showPauseButton
-//    radioPlayer.onpause = showPlayButton
+function createVideoPlayer() {
+    var videoPlayer = document.createElement("video")
+    videoPlayer.id = "videoPlayer"
+    videoPlayer.onended = playnextsong
+//    videoPlayer.onplaying = showPauseButton
+//    videoPlayer.onpause = showPlayButton
 
-    return radioPlayer
+    return videoPlayer
 }

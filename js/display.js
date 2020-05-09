@@ -320,7 +320,6 @@ function updateInfo(song) {
             infoListContainer.append($("<li></li>")
                 .html(innerHTML)
             );
-            if (autoplay && host==="catbox" && resolution ==="0") play(url)
         }
     }
     infoUrls.append(infoListContainer);
@@ -331,6 +330,21 @@ function updateInfo(song) {
     $("#slInfoBody").append(infoRow4);
     
     cursong=song.songid;
+
+	let reslist=["0","480","720"];
+	let hostlist=["catbox","animethemes","openingsmoe"]
+	if (autoplay) {
+		for(let res of reslist) {
+			for(let host of hostlist) {
+				if(song.urls[host]!==undefined) {
+					if(song.urls[host][res]!==undefined) {
+						play(song.urls[host][res]);
+						return;
+					}
+				}
+			}
+		}
+	}
 }
 
 function clearInfo() {
@@ -342,9 +356,9 @@ function clearScoreboard() {
 }
 
 function play(song) {
-    var radioPlayer = document.getElementById('radioPlayer')
-    radioPlayer.src = song
-    radioPlayer.play()
+    var videoPlayer = document.getElementById('videoPlayer')
+    videoPlayer.src = song
+    videoPlayer.play()
 }
 function playnextsong() {
 	let index=playlist.findIndex((x)=>x==cursong);
@@ -352,6 +366,6 @@ function playnextsong() {
 	nextsong.click();
 }
 function stopsong() {
-    var radioPlayer = document.getElementById('radioPlayer')
-    radioPlayer.pause()
+    var videoPlayer = document.getElementById('videoPlayer')
+    videoPlayer.pause()
 }
