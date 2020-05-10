@@ -79,12 +79,11 @@ function setup() {
         }
     })
 
-    document.body.append(createVideoPlayer())
+    createVideoPlayer();
 }
 
 function createVideoPlayer() {
-    var videoPlayer = document.createElement("video")
-    videoPlayer.id = "videoPlayer"
+    var videoPlayer = document.getElementById('videoPlayer')
     videoPlayer.onended = playnextsong
 //    videoPlayer.onplaying = showPauseButton
 //    videoPlayer.onpause = showPlayButton
