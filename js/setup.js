@@ -46,6 +46,7 @@ function setup() {
     $("#slPlayerName").on("input", function () {
         updateScoreboardHighlight($(this).val());
         updateTableGuesses($(this).val());
+        updateTypes();
     });
     $("#slImport").on("change", function () {
         let file = $(this).get(0).files[0];

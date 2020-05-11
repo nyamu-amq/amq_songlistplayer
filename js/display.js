@@ -115,14 +115,10 @@ function updateTableGuesses(playerName) {
         });
         if (findPlayer !== undefined) {
             playerExists = true;
-            if (!$("#slPlayerAnswers").hasClass("unchecked")) {
-                $($(".songData .playerAnswer").get(i)).text(findPlayer.answer);
-                $(".playerAnswer").show();
-            }
-            else {
-                $(".playerAnswer").hide();
-            }
-            if (findPlayer.active === true && !$("#slPlayerCorrect").hasClass("unchecked")) {
+            $($(".songData .playerAnswer").get(i)).text(findPlayer.answer);
+            $(".playerAnswer").show();
+
+            if (findPlayer.active === true) {
                 $($("tr.songData").get(i)).addClass(findPlayer.correct === true ? "rightAnswerTable" : "wrongAnswerTable");
             }
             else {
@@ -135,9 +131,6 @@ function updateTableGuesses(playerName) {
             $($("tr.songData").get(i)).removeClass("wrongAnswerTable");
             $($(".songData .playerAnswer").get(i)).text("...");
             if (!playerExists) {
-                $(".playerAnswer").hide();
-            }
-            if ($("#slPlayerAnswers").hasClass("unchecked")) {
                 $(".playerAnswer").hide();
             }
         }

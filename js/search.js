@@ -153,29 +153,42 @@ function resetplaylist() {
 
 function updateTypes() {
 	resetplaylist();
-    $(".songData .songType").each((index, elem) => {
-        if ($(elem).text().includes("Opening") && $("#slTypeOpenings").hasClass("unchecked")) {
-            $(elem).addClass("rowHidden");
+
+	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
+	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
+
+    $(".songData").each((index, elem) => {
+    	var rightanswer=$(elem).hasClass("rightAnswerTable");
+    	var wronganswer=$(elem).hasClass("wrongAnswerTable");
+    	var songtypeclass = $(elem).find(".songType");
+    	if(uncheckedcorrect && rightanswer) {
+    		songtypeclass.addClass("rowHidden");
+    	}
+    	else if(uncheckedincorrect && wronganswer) {
+    		songtypeclass.addClass("rowHidden");
+    	}
+        else if (songtypeclass.text().includes("Opening") && $("#slTypeOpenings").hasClass("unchecked")) {
+            songtypeclass.addClass("rowHidden");
         }
-        else if ($(elem).text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
-            $(elem).removeClass("rowHidden");
+        else if (songtypeclass.text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
+            songtypeclass.removeClass("rowHidden");
             playlist.push(index)
         }
-        else if ($(elem).text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
-            $(elem).addClass("rowHidden");
+        else if (songtypeclass.text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
+            songtypeclass.addClass("rowHidden");
         }
-        else if ($(elem).text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
-            $(elem).removeClass("rowHidden");
+        else if (songtypeclass.text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
+            songtypeclass.removeClass("rowHidden");
             playlist.push(index)
         }
-        else if ($(elem).text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
-            $(elem).addClass("rowHidden");
+        else if (songtypeclass.text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
+            songtypeclass.addClass("rowHidden");
         }
         else {
-            $(elem).removeClass("rowHidden");
+            songtypeclass.removeClass("rowHidden");
             playlist.push(index)
         }
-        updateRow($(elem).parent())
+        updateRow(songtypeclass.parent())
     })
 }
 
