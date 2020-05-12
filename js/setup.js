@@ -54,33 +54,60 @@ function setup() {
             alert("Please select a file");
         }
         else {
-            let reader = new FileReader();
-            reader.onload = function () {
-                try {
-                    importData = JSON.parse(reader.result);
-                    $("#slInfo").hide();
-                    $("#slScoreboard").hide();
-                    loadData();
-                    searchAnime($("#slSearchAnime").val());
-                    searchArtist($("#slSearchArtist").val());
-                    searchSongName($("#slSearchSongName").val());
-                    updateTypes();
-                }
-                catch (e) {
-                    if (e instanceof SyntaxError) {
-                        alert(e.name + ": " + e.message);
-                    }
-                    if (e instanceof ReferenceError) {
-                        alert(e.name + ": " + e.message);
-                    }
-                }
-                
-            }
-            reader.readAsText(file);
+        	openSongList(file);
         }
     })
+    $("#slHeader")
+		.on("dragover", dragOver)
+		.on("dragleave", dragOver)
+		.on("drop", uploadFiles);
+    $("#slMain")
+		.on("dragover", dragOver)
+		.on("dragleave", dragOver)
+		.on("drop", uploadFiles);
 
     createVideoPlayer();
+}
+function dragOver(e){
+	e.stopPropagation();
+	e.preventDefault();
+}
+ 
+function uploadFiles(e){
+	e.stopPropagation();
+	e.preventDefault();
+	dragOver(e);
+
+	e.dataTransfer = e.originalEvent.dataTransfer;
+	var files = e.target.files || e.dataTransfer.files;
+
+	openSongList(files[0]);
+}
+
+function openSongList(file) {
+	let reader = new FileReader();
+	reader.onload = function () {
+	    try {
+	        importData = JSON.parse(reader.result);
+	        $("#slInfo").hide();
+	        $("#slScoreboard").hide();
+	        loadData();
+	        searchAnime($("#slSearchAnime").val());
+	        searchArtist($("#slSearchArtist").val());
+	        searchSongName($("#slSearchSongName").val());
+	        updateTypes();
+	    }
+	    catch (e) {
+	        if (e instanceof SyntaxError) {
+	            alert(e.name + ": " + e.message);
+	        }
+	        if (e instanceof ReferenceError) {
+	            alert(e.name + ": " + e.message);
+	        }
+	    }
+	    
+	}
+	reader.readAsText(file);
 }
 
 function createVideoPlayer() {
