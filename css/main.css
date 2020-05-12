@@ -140,6 +140,11 @@ body {
     width: 80px;
     margin-top: 5px;
 }
+#slSample {
+    color: black;
+    width: 80px;
+    margin-top: 5px;
+}
 
 #slHeaderPlayer {
     width: 200px;
