@@ -55,9 +55,9 @@ function loadData() {
             .click(function () {
                 if (!$(this).hasClass("selected")) {
                     $(".selected").removeClass("selected");
+                    $(this).addClass("selected");
                     updateScoreboard(song);
                     updateInfo(song);
-                    $(this).addClass("selected");
                 }
                 else {
                     $(".selected").removeClass("selected");
@@ -353,12 +353,29 @@ function play(song) {
     videoPlayer.src = song
     videoPlayer.play()
 }
+var playrandom=false;
 function playnextsong() {
-	let index=playlist.findIndex((x)=>x==cursong);
-	var nextsong=document.getElementById(playlist[index+1]);
-	nextsong.click();
+	var nextindex;
+	if($("#slPlayOrder").val() === "random") {
+		nextindex=playlist[getRandomInt(playlist.length)];
+	}
+	else {
+		var index=playlist.findIndex((x)=>x==cursong);
+		nextindex=playlist[index+1];
+	}
+	playsong(nextindex);
 }
 function stopsong() {
     var videoPlayer = document.getElementById('videoPlayer')
     videoPlayer.pause()
+}
+
+function playsong(index) {
+	$(".selected").removeClass("selected");
+	$($("tr.songData").get(index)).addClass("selected");
+	updateScoreboard(importData[index]);
+	updateInfo(importData[index]);
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
