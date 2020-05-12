@@ -86,7 +86,7 @@ function setup() {
 function createVideoPlayer() {
     var videoPlayer = document.getElementById('videoPlayer')
     videoPlayer.onended = playnextsong
-	videoPlayer.onloadeddata = function(){
+	videoPlayer.onseeked = function(){
 		if($("#slSample").val() !== "all") {
 			nextsongtimer = setTimeout(function() { playnextsong() }, 20000);
 		}
