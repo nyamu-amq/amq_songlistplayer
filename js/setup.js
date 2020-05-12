@@ -86,6 +86,11 @@ function setup() {
 function createVideoPlayer() {
     var videoPlayer = document.getElementById('videoPlayer')
     videoPlayer.onended = playnextsong
+	videoPlayer.onloadeddata = function(){
+		if($("#slSample").val() !== "all") {
+			nextsongtimer = setTimeout(function() { playnextsong() }, 20000);
+		}
+	}
 //    videoPlayer.onplaying = showPauseButton
 //    videoPlayer.onpause = showPlayButton
 

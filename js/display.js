@@ -332,14 +332,10 @@ function updateInfo(song) {
 				if(song.urls[host]!==undefined) {
 					if(song.urls[host][res]!==undefined) {
 						var starttime=0;
-						if($("#slSample").val() === "all") {}
-						else {
-							if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-20);
-							else if($("#slSample").val() === "mid") starttime = song.videoLength*.5-10;
-							else if($("#slSample").val() === "end") starttime = song.videoLength-20;
-							else if($("#slSample").val() === "recorded") starttime = song.startSample;
-							nextsongtimer = setTimeout(function() { playnextsong() }, 20000);
-						}
+						if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-20);
+						else if($("#slSample").val() === "mid") starttime = song.videoLength*.5-10;
+						else if($("#slSample").val() === "end") starttime = song.videoLength-25;
+						else if($("#slSample").val() === "recorded") starttime = song.startSample;
 						if(starttime<0) starttime=0;
 						play(song.urls[host][res],starttime);
 						return;
