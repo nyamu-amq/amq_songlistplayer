@@ -84,11 +84,12 @@ function setup() {
 }
 
 function createVideoPlayer() {
-    var videoPlayer = document.getElementById('videoPlayer')
-    videoPlayer.onended = playnextsong
-	videoPlayer.onseeked = function(){
+    var videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.onended = playnextsong;
+	videoPlayer.onseeked = function() {
 		if($("#slSample").val() !== "all") {
-			nextsongtimer = setTimeout(function() { playnextsong() }, 20000);
+			var length= parseInt($("#slLength").val())*1000;
+			nextsongtimer = setTimeout(function() { playnextsong() }, length);
 		}
 	}
 //    videoPlayer.onplaying = showPauseButton

@@ -324,6 +324,8 @@ function updateInfo(song) {
     
     cursong=song.songid;
 
+	var length= parseInt($("#slLength").val());
+
 	let reslist=["0","480","720"];
 	let hostlist=["catbox","animethemes","openingsmoe"]
 	if (autoplay) {
@@ -332,9 +334,9 @@ function updateInfo(song) {
 				if(song.urls[host]!==undefined) {
 					if(song.urls[host][res]!==undefined) {
 						var starttime=0;
-						if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-20);
-						else if($("#slSample").val() === "mid") starttime = song.videoLength*.5-10;
-						else if($("#slSample").val() === "end") starttime = song.videoLength-25;
+						if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-length-5);
+						else if($("#slSample").val() === "mid") starttime = (song.videoLength-length)*.5;
+						else if($("#slSample").val() === "end") starttime = song.videoLength-length-5;
 						else if($("#slSample").val() === "recorded") starttime = song.startSample;
 						if(starttime<0) starttime=0;
 						play(song.urls[host][res],starttime);
