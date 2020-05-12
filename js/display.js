@@ -331,7 +331,17 @@ function updateInfo(song) {
 			for(let host of hostlist) {
 				if(song.urls[host]!==undefined) {
 					if(song.urls[host][res]!==undefined) {
-						play(song.urls[host][res]);
+						var starttime=0;
+						if($("#slSample").val() === "all") {}
+						else {
+							if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-20);
+							else if($("#slSample").val() === "mid") starttime = song.videoLength*.5-10;
+							else if($("#slSample").val() === "end") starttime = song.videoLength-20;
+							else if($("#slSample").val() === "recorded") starttime = song.startSample;
+							nextsongtimer = setTimeout(function() { playnextsong() }, 20000);
+						}
+						if(starttime<0) starttime=0;
+						play(song.urls[host][res],starttime);
 						return;
 					}
 				}
@@ -339,6 +349,7 @@ function updateInfo(song) {
 		}
 	}
 }
+var nextsongtimer=null;
 
 function clearInfo() {
     $("#slInfoBody").children().remove();
@@ -348,12 +359,13 @@ function clearScoreboard() {
     $(".slScoreboardEntry").remove();
 }
 
-function play(song) {
-    var videoPlayer = document.getElementById('videoPlayer')
-    videoPlayer.src = song
-    videoPlayer.play()
+function play(song, starttime) {
+    var videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.src = song;
+    videoPlayer.currentTime=starttime;
+    videoPlayer.play();
 }
-var playrandom=false;
+
 function playnextsong() {
 	var nextindex;
 	if($("#slPlayOrder").val() === "random") {
@@ -366,8 +378,10 @@ function playnextsong() {
 	playsong(nextindex);
 }
 function stopsong() {
-    var videoPlayer = document.getElementById('videoPlayer')
-    videoPlayer.pause()
+    var videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.pause();
+    if(nextsongtimer!=null) clearTimeout(nextsongtimer);
+    nextsongtimer=null;
 }
 
 function playsong(index) {
