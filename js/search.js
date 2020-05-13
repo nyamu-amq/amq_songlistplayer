@@ -95,9 +95,19 @@ function updateRow(row) {
 }
 
 function searchSongName(query) {
+	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
+	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
 	resetplaylist();
     $(".songData .songName").each((index, elem) => {
-        if (testRegex($(elem).text(), query)) {
+    	var rightanswer=$(elem).parent().hasClass("rightAnswerTable");
+    	var wronganswer=$(elem).parent().hasClass("wrongAnswerTable");
+    	if(uncheckedcorrect && rightanswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+    	else if(uncheckedincorrect && wronganswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+        else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
             playlist.push(index)
         }
@@ -109,9 +119,19 @@ function searchSongName(query) {
 }
 
 function searchArtist(query) {
+	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
+	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
 	resetplaylist();
     $(".songData .songArtist").each((index, elem) => {
-        if (testRegex($(elem).text(), query)) {
+    	var rightanswer=$(elem).parent().hasClass("rightAnswerTable");
+    	var wronganswer=$(elem).parent().hasClass("wrongAnswerTable");
+    	if(uncheckedcorrect && rightanswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+    	else if(uncheckedincorrect && wronganswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+        else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
             playlist.push(index)
         }
@@ -123,9 +143,19 @@ function searchArtist(query) {
 }
 
 function searchAnime(query) {
+	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
+	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
 	resetplaylist();
     $(".songData .animeNameRomaji").each((index, elem) => {
-        if (testRegex($(elem).text(), query)) {
+    	var rightanswer=$(elem).parent().hasClass("rightAnswerTable");
+    	var wronganswer=$(elem).parent().hasClass("wrongAnswerTable");
+    	if(uncheckedcorrect && rightanswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+    	else if(uncheckedincorrect && wronganswer) {
+    		$(elem).addClass("rowHidden");
+    	}
+        else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
             $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
             playlist.push(index)
@@ -157,38 +187,37 @@ function updateTypes() {
 	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
 	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
 
-    $(".songData").each((index, elem) => {
-    	var rightanswer=$(elem).hasClass("rightAnswerTable");
-    	var wronganswer=$(elem).hasClass("wrongAnswerTable");
-    	var songtypeclass = $(elem).find(".songType");
+    $(".songData .songType").each((index, elem) => {
+    	var rightanswer=$(elem).parent().hasClass("rightAnswerTable");
+    	var wronganswer=$(elem).parent().hasClass("wrongAnswerTable");
     	if(uncheckedcorrect && rightanswer) {
-    		songtypeclass.addClass("rowHidden");
+    		$(elem).addClass("rowHidden");
     	}
     	else if(uncheckedincorrect && wronganswer) {
-    		songtypeclass.addClass("rowHidden");
+    		$(elem).addClass("rowHidden");
     	}
-        else if (songtypeclass.text().includes("Opening") && $("#slTypeOpenings").hasClass("unchecked")) {
-            songtypeclass.addClass("rowHidden");
+        else if ($(elem).text().includes("Opening") && $("#slTypeOpenings").hasClass("unchecked")) {
+            $(elem).addClass("rowHidden");
         }
-        else if (songtypeclass.text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
-            songtypeclass.removeClass("rowHidden");
+        else if ($(elem).text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
+            $(elem).removeClass("rowHidden");
             playlist.push(index)
         }
-        else if (songtypeclass.text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
-            songtypeclass.addClass("rowHidden");
+        else if ($(elem).text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
+            $(elem).addClass("rowHidden");
         }
-        else if (songtypeclass.text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
-            songtypeclass.removeClass("rowHidden");
+        else if ($(elem).text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
+            $(elem).removeClass("rowHidden");
             playlist.push(index)
         }
-        else if (songtypeclass.text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
-            songtypeclass.addClass("rowHidden");
+        else if ($(elem).text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
+            $(elem).addClass("rowHidden");
         }
         else {
-            songtypeclass.removeClass("rowHidden");
+            $(elem).removeClass("rowHidden");
             playlist.push(index)
         }
-        updateRow(songtypeclass.parent())
+        updateRow($(elem).parent())
     })
 }
 
