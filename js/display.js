@@ -185,13 +185,19 @@ function updateScoreboardHighlight(name) {
 
 function updateInfo(song) {
 	var cursongdata=song;
+	cursong=song.songid;
 	$("#slInfoHeader").children().remove();
 	if($("#slPlayOrder").val() === "random") {
 		$("#slInfoHeader").append("<h2>Previous Song Info</h2>");
 		if(prevsong!==undefined) song=importData[prevsong];
 		else song=undefined;
+	    prevsong=cursong;
+
 	}
-	else $("#slInfoHeader").append("<h2>Song Info</h2>");
+	else {
+		$("#slInfoHeader").append("<h2>Song Info</h2>");
+		prevsong=undefined;
+	}
 	stopsong();
     clearInfo();
     if(song!==undefined) {
@@ -333,7 +339,6 @@ function updateInfo(song) {
 	    $("#slInfoBody").append(infoRow4);
 	}
     song=cursongdata;
-    prevsong=cursong=song.songid;
 
 	var length= parseInt($("#slLength").val());
 
