@@ -60,11 +60,16 @@ function setup() {
     $("#slHeader")
 		.on("dragover", dragOver)
 		.on("dragleave", dragOver)
-		.on("drop", uploadFiles);
+		.on("drop", uploadFiles)
+		.on("mousewheel", volumeControl);
     $("#slMain")
 		.on("dragover", dragOver)
 		.on("dragleave", dragOver)
 		.on("drop", uploadFiles);
+	$("#slScoreboard")
+		.on("mousewheel", volumeControl);
+	$("#slInfo")
+		.on("mousewheel", volumeControl);
 
     createVideoPlayer();
 }
@@ -123,4 +128,13 @@ function createVideoPlayer() {
 //    videoPlayer.onpause = showPlayButton
 
     return videoPlayer
+}
+function volumeControl(event) {
+	let videoPlayer = document.getElementById('videoPlayer');
+	var volumetemp=videoPlayer.volume;
+	if(event.originalEvent.wheelDelta>0)
+		volumetemp+=.05;
+	else
+		volumetemp-=.05;
+	videoPlayer.volume=Math.min(Math.max(volumetemp, 0), 1)
 }
