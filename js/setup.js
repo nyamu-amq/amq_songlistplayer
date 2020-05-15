@@ -61,15 +61,15 @@ function setup() {
 		.on("dragover", dragOver)
 		.on("dragleave", dragOver)
 		.on("drop", uploadFiles)
-		.on("mousewheel", volumeControl);
+		.on("wheel", volumeControl);
     $("#slMain")
 		.on("dragover", dragOver)
 		.on("dragleave", dragOver)
 		.on("drop", uploadFiles);
 	$("#slScoreboard")
-		.on("mousewheel", volumeControl);
+		.on("wheel", volumeControl);
 	$("#slInfo")
-		.on("mousewheel", volumeControl);
+		.on("wheel", volumeControl);
 
     createVideoPlayer();
 }
@@ -124,6 +124,7 @@ function createVideoPlayer() {
 			nextsongtimer = setTimeout(function() { playnextsong() }, length);
 		}
 	}
+	videoPlayer.volume=getCookie("volume", 1);
 //    videoPlayer.onplaying = showPauseButton
 //    videoPlayer.onpause = showPlayButton
 
@@ -132,9 +133,30 @@ function createVideoPlayer() {
 function volumeControl(event) {
 	let videoPlayer = document.getElementById('videoPlayer');
 	var volumetemp=videoPlayer.volume;
-	if(event.originalEvent.wheelDelta>0)
+	if(event.originalEvent.deltaY<0)
 		volumetemp+=.05;
 	else
 		volumetemp-=.05;
-	videoPlayer.volume=Math.min(Math.max(volumetemp, 0), 1)
+	volumetemp=Math.min(Math.max(volumetemp, 0), 1);
+	videoPlayer.volume=volumetemp;
+	setCookie("volume",volumetemp);
+}
+
+function getCookie(cookieKey, defaultValue) {
+    var cookieList = document.cookie.split(";")
+    var tempValue = cookieList.find(function(cookie) {
+        return cookie.includes(cookieKey)
+    })
+
+    if (tempValue == null) {
+        return defaultValue
+    }
+
+    var cookieValue = tempValue.substring(cookieKey.length + 2)
+    return cookieValue == "true"
+}
+function setCookie(cookieKey, value) {
+	var exdate = new Date();
+  	exdate.setDate(exdate.getDate() + 365);
+	document.cookie = cookieKey+"=" + value.toString() + "; max-age=999999999";
 }
