@@ -133,10 +133,7 @@ function createVideoPlayer() {
 function volumeControl(event) {
 	let videoPlayer = document.getElementById('videoPlayer');
 	var volumetemp=videoPlayer.volume;
-	if(event.originalEvent.deltaY<0)
-		volumetemp+=.05;
-	else
-		volumetemp-=.05;
+	volumetemp+=(event.originalEvent.deltaY<0)?.05:-.05;
 	volumetemp=Math.min(Math.max(volumetemp, 0), 1);
 	videoPlayer.volume=volumetemp;
 	setCookie("volume",volumetemp);
@@ -153,10 +150,9 @@ function getCookie(cookieKey, defaultValue) {
     }
 
     var cookieValue = tempValue.substring(cookieKey.length + 2)
-    return cookieValue == "true"
+    return parseFloat(cookieValue);
 }
 function setCookie(cookieKey, value) {
-	var exdate = new Date();
-  	exdate.setDate(exdate.getDate() + 365);
 	document.cookie = cookieKey+"=" + value.toString() + "; max-age=999999999";
+	console.log(document.cookie);
 }
