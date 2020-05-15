@@ -153,6 +153,5 @@ function getCookie(cookieKey, defaultValue) {
     return parseFloat(cookieValue);
 }
 function setCookie(cookieKey, value) {
-	document.cookie = cookieKey+"=" + value.toString() + "; max-age=999999999";
-	console.log(document.cookie);
+	document.cookie = cookieKey+"=" + value.toString() + "; max-age=9999999";
 }
