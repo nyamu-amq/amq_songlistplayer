@@ -351,6 +351,7 @@ function updateInfo(song) {
 					if(song.urls[host][res]!==undefined) {
 						var starttime=0;
 						if($("#slSample").val() === "random") starttime = Math.random()*(song.videoLength-length-5);
+						else if($("#slSample").val() === "start") starttime = .2;
 						else if($("#slSample").val() === "mid") starttime = (song.videoLength-length)*.5;
 						else if($("#slSample").val() === "end") starttime = song.videoLength-length-5;
 						else if($("#slSample").val() === "recorded") starttime = song.startSample;
