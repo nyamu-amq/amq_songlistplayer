@@ -43,6 +43,15 @@ function setup() {
         }
         updateAutoPlay();
     });
+    $(".repeatCheckbox").click(function () {
+        if ($(this).hasClass("unchecked")) {
+            $(this).removeClass("unchecked");
+        }
+        else {
+            $(this).addClass("unchecked");
+        }
+        updateRepeat();
+    });
     $("#slPlayerName").on("input", function () {
         updateScoreboardHighlight($(this).val());
         updateTableGuesses($(this).val());
@@ -119,6 +128,7 @@ function createVideoPlayer() {
     var videoPlayer = document.getElementById('videoPlayer');
     videoPlayer.onended = playnextsong;
 	videoPlayer.onseeked = function() {
+		if(videoPlayer.paused) return;
 		if($("#slSample").val() !== "all") {
 			var length= parseInt($("#slLength").val())*1000;
 			nextsongtimer = setTimeout(function() { playnextsong() }, length);
@@ -128,7 +138,7 @@ function createVideoPlayer() {
 //    videoPlayer.onplaying = showPauseButton
 //    videoPlayer.onpause = showPlayButton
 
-    return videoPlayer
+    return videoPlayer;
 }
 function volumeControl(event) {
 	let videoPlayer = document.getElementById('videoPlayer');

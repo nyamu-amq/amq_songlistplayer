@@ -225,3 +225,7 @@ let autoplay=true;
 function updateAutoPlay() {
 	autoplay=!$("#slAutoPlay").hasClass("unchecked");
 }
+let repeat=false;
+function updateRepeat() {
+    repeat=!$("#slRepeat").hasClass("unchecked");
+}

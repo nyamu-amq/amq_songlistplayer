@@ -383,7 +383,11 @@ function play(song, starttime) {
 
 function playnextsong() {
 	var nextindex;
-	if($("#slPlayOrder").val() === "random") {
+	if(repeat) {
+		var index=playlist.findIndex((x)=>x==cursong);
+		nextindex=index;
+	}
+	else if($("#slPlayOrder").val() === "random") {
 		nextindex=playlist[getRandomInt(playlist.length)];
 	}
 	else {
