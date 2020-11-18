@@ -128,27 +128,17 @@ body {
     top: -57%;
     user-select: none;
 }
-.repeatCheckbox {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background-image: linear-gradient(to bottom,#f5f5f5 0,#f9f9f9 100%);
-    margin: auto;
-}
-.repeatCheckbox label {
-    color: #006ab7;
-    font-size: 28px;
-    position: relative;
-    left: 0;
-    top: -57%;
-    user-select: none;
-}
 #slPlayOrderContainer {
     width: 80px;
     float: left;
     text-align: center;
     margin-top: 15px;
     margin-left: 2%;
+}
+#slRepeat {
+    color: black;
+    width: 80px;
+    margin-top: 5px;
 }
 #slPlayOrder {
     color: black;
