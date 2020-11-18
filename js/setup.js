@@ -43,15 +43,6 @@ function setup() {
         }
         updateAutoPlay();
     });
-    $(".repeatCheckbox").click(function () {
-        if ($(this).hasClass("unchecked")) {
-            $(this).removeClass("unchecked");
-        }
-        else {
-            $(this).addClass("unchecked");
-        }
-        updateRepeat();
-    });
     $("#slPlayerName").on("input", function () {
         updateScoreboardHighlight($(this).val());
         updateTableGuesses($(this).val());

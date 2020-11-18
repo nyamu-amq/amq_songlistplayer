@@ -59,6 +59,8 @@ function loadData() {
                     $(this).addClass("selected");
                     updateScoreboard(song);
                     updateInfo(song);
+                    repeat=repeatcount=$("#slRepeat").val()*1;
+                    repeatcount--;
                 }
                 else {
                     $(".selected").removeClass("selected");
@@ -381,20 +383,26 @@ function play(song, starttime) {
     videoPlayer.play();
 }
 
+let repeat=0;
+var repeatcount=0;
 function playnextsong() {
+	repeat=$("#slRepeat").val()*1;
 	var nextindex;
-	if(repeat) {
+	if(repeat>0 && repeatcount>0) {
 		var index=playlist.findIndex((x)=>x==cursong);
-		nextindex=index;
+		nextindex=playlist[index];
 	}
 	else if($("#slPlayOrder").val() === "random") {
 		nextindex=playlist[getRandomInt(playlist.length)];
+		if(repeat>0) repeatcount=repeat;
 	}
 	else {
 		var index=playlist.findIndex((x)=>x==cursong);
 		if(index<playlist.length-1) index++; else index=0;
 		nextindex=playlist[index];
+		if(repeat>0) repeatcount=repeat;
 	}
+	if(repeat>0) repeatcount--;
 	playsong(nextindex);
 }
 function stopsong() {

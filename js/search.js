@@ -109,13 +109,14 @@ function searchSongName(query) {
     	}
         else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
-            playlist.push(index)
+            // playlist.push(index)
         }
         else {
             $(elem).addClass("rowHidden");
         }
         updateRow($(elem).parent());
     });
+    rebuildplaylist();
 }
 
 function searchArtist(query) {
@@ -133,13 +134,14 @@ function searchArtist(query) {
     	}
         else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
-            playlist.push(index)
+            // playlist.push(index)
         }
         else {
             $(elem).addClass("rowHidden");
         }
         updateRow($(elem).parent());
     });
+    rebuildplaylist();
 }
 
 function searchAnime(query) {
@@ -158,13 +160,13 @@ function searchAnime(query) {
         else if (testRegex($(elem).text(), query)) {
             $(elem).removeClass("rowHidden");
             $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
-            playlist.push(index)
+            //playlist.push(index)
         }
         else {
             if (testRegex($(elem).parent().find(".animeNameEnglish").text(), query)) {
                 $(elem).removeClass("rowHidden");
                 $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
-                playlist.push(index)
+                //playlist.push(index)
             }
             else {
                 $(elem).parent().find(".animeNameEnglish").addClass("rowHidden");
@@ -173,12 +175,19 @@ function searchAnime(query) {
         }
         updateRow($(elem).parent());
     });
+    rebuildplaylist();
 }
 
 let playlist=[]
 function resetplaylist() {
 	playlist=[]
 	stopsong();
+}
+function rebuildplaylist() {
+	playlist=[]
+	$(".songData .animeNameRomaji").each((index, elem) => {
+		if(!$(elem).hasClass("rowHidden")) playlist.push(index);
+	});
 }
 
 function updateTypes() {
@@ -201,31 +210,28 @@ function updateTypes() {
         }
         else if ($(elem).text().includes("Opening") && !$("#slTypeOpenings").hasClass("unchecked")) {
             $(elem).removeClass("rowHidden");
-            playlist.push(index)
+            //playlist.push(index)
         }
         else if ($(elem).text().includes("Ending") && $("#slTypeEndings").hasClass("unchecked")) {
             $(elem).addClass("rowHidden");
         }
         else if ($(elem).text().includes("Ending") && !$("#slTypeEndings").hasClass("unchecked")) {
             $(elem).removeClass("rowHidden");
-            playlist.push(index)
+            //playlist.push(index)
         }
         else if ($(elem).text().includes("Insert") && $("#slTypeInserts").hasClass("unchecked")) {
             $(elem).addClass("rowHidden");
         }
         else {
             $(elem).removeClass("rowHidden");
-            playlist.push(index)
+            // playlist.push(index)
         }
         updateRow($(elem).parent())
     })
+    rebuildplaylist();
 }
 
 let autoplay=true;
 function updateAutoPlay() {
 	autoplay=!$("#slAutoPlay").hasClass("unchecked");
-}
-let repeat=false;
-function updateRepeat() {
-    repeat=!$("#slRepeat").hasClass("unchecked");
 }
