@@ -185,8 +185,8 @@ function resetplaylist() {
 }
 function rebuildplaylist() {
 	playlist=[]
-	$(".songData .animeNameRomaji").each((index, elem) => {
-		if(!$(elem).hasClass("rowHidden")) playlist.push(index);
+	$(".songData").each((index, elem) => {
+		if($(elem).css('display')!='none') playlist.push(index);
 	});
 }
 
