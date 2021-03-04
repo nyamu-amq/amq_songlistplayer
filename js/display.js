@@ -415,6 +415,7 @@ function stopsong() {
 function playsong(index) {
 	$(".selected").removeClass("selected");
 	$($("tr.songData").get(index)).addClass("selected");
+	$("#slTableBody").scrollTop($(".songData.selected").position().top);
 	updateScoreboard(importData[index]);
 	updateInfo(importData[index]);
 }
