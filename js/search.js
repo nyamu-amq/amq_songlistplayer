@@ -145,33 +145,46 @@ function searchArtist(query) {
 }
 
 function searchAnime(query) {
+	var except=false;
+	if(query.startsWith('-')) {
+		except=true;
+		query=query.substr(1);
+	}
+
 	var uncheckedcorrect=$("#slPlayerCorrect").hasClass("unchecked");
 	var uncheckedincorrect=$("#slPlayerIncorrect").hasClass("unchecked");
 	resetplaylist();
     $(".songData .animeNameRomaji").each((index, elem) => {
     	var rightanswer=$(elem).parent().hasClass("rightAnswerTable");
     	var wronganswer=$(elem).parent().hasClass("wrongAnswerTable");
+
+    	var matchromaji=testRegex($(elem).text(), query);
+    	var matchenglish=testRegex($(elem).parent().find(".animeNameEnglish").text(), query);
+
     	if(uncheckedcorrect && rightanswer) {
     		$(elem).addClass("rowHidden");
     	}
     	else if(uncheckedincorrect && wronganswer) {
     		$(elem).addClass("rowHidden");
     	}
-        else if (testRegex($(elem).text(), query)) {
-            $(elem).removeClass("rowHidden");
-            $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
-            //playlist.push(index)
-        }
         else {
-            if (testRegex($(elem).parent().find(".animeNameEnglish").text(), query)) {
-                $(elem).removeClass("rowHidden");
-                $(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
-                //playlist.push(index)
-            }
-            else {
-                $(elem).parent().find(".animeNameEnglish").addClass("rowHidden");
-                $(elem).addClass("rowHidden");
-            }
+        	var hide=false;
+        	if(except) {
+        		if(matchromaji||matchenglish) hide=true;
+        		else hide=false;
+        	}
+        	else {
+        		if(matchromaji||matchenglish) hide=false;
+        		else hide=true;
+        	}
+        	if(hide) {
+        		$(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
+        		$(elem).addClass("rowHidden");
+        	}
+        	else {
+        		$(elem).removeClass("rowHidden");
+        		$(elem).parent().find(".animeNameEnglish").removeClass("rowHidden");
+        	}
         }
         updateRow($(elem).parent());
     });
