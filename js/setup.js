@@ -93,7 +93,7 @@ function openSongList(file) {
 	let reader = new FileReader();
 	reader.onload = function () {
 	    try {
-	        importData = JSON.parse(reader.result);
+	        importData = convertJson(JSON.parse(reader.result));
 	        $("#slInfo").hide();
 	        $("#slScoreboard").hide();
 	        loadData();
@@ -113,6 +113,47 @@ function openSongList(file) {
 	    
 	}
 	reader.readAsText(file);
+}
+
+function convertJson(listdata) {
+    for(var i=0;i<listdata.length;i++) {
+        listdata[i]=convertSong(listdata[i]);
+    }
+    return listdata;
+}
+function convertSong(data) {
+    if(data.animeEng) {
+        data.anime={english:data.animeEng,romaji:data.animeRomaji};
+        data.animeEng=undefined;
+        data.animeRomaji=undefined;
+    }
+    if(data.songName) {
+        data.name=data.songName;
+        data.songName=undefined;
+    }
+    if(data.activePlayerCount) {
+        data.activePlayers=data.totalPlayers=data.activePlayerCount;
+        data.activePlayerCount=undefined;
+    }
+    if(data.LinkVideo) {
+        data.urls={catbox:{0:data.LinkMp3,720:data.LinkVideo}};
+        data.LinkMp3=undefined;
+        data.LinkVideo=undefined;
+    }
+    if(data.songDuration) {
+        data.videoLength=data.songDuration;
+        data.startSample=data.startTime;
+        data.songDuration=undefined;
+        data.startTime=undefined;
+    }
+    if(data.players==undefined) {
+        data.players=[];
+    }
+    if(data.fromList==undefined) {
+        data.fromList=[];
+    }
+
+    return data;
 }
 
 function createVideoPlayer() {
