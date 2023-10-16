@@ -93,7 +93,8 @@ function openSongList(file) {
 	let reader = new FileReader();
 	reader.onload = function () {
 	    try {
-	        importData = convertJson(JSON.parse(reader.result.replace(/files\.catbox\.moe/g,'nl\.catbox\.moe')));
+	        //importData = convertJson(JSON.parse(reader.result.replace(/files\.catbox\.moe/g,'nl\.catbox\.moe')));
+            importData = convertJson(JSON.parse(reader.result));
 	        $("#slInfo").hide();
 	        $("#slScoreboard").hide();
 	        loadData();

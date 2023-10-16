@@ -327,7 +327,7 @@ function updateInfo(song) {
 	    infoListContainer = $("<ul></ul>");
 	    for (let host in song.urls) {
 	        for (let resolution in song.urls[host]) {
-	            let url = song.urls[host][resolution];
+	            let url = formatUrl(song.urls[host][resolution]);
 	            let innerHTML = "";
 	            innerHTML += (host === "catbox" ? "Catbox " : (host === "animethemes" ? "AnimeThemes " : "OpeningsMoe "));
 	            innerHTML += (resolution === "0") ? "MP3: " : (resolution === "480") ? "480p: " : "720p: ";
@@ -380,9 +380,13 @@ function clearScoreboard() {
     $(".slScoreboardEntry").remove();
 }
 
+function formatUrl(src) {
+	return "https://nl.catbox.moe/"+(src.replace(/^.*\//, ''));
+}
+
 function play(song, starttime) {
     var videoPlayer = document.getElementById('videoPlayer');
-    videoPlayer.src = song;
+    videoPlayer.src = formatUrl(song);
     videoPlayer.currentTime=starttime;
     videoPlayer.play();
 }
