@@ -89,12 +89,56 @@ function uploadFiles(e){
 	openSongList(files[0]);
 }
 
+function convertData() {
+    let strType=["Opening ","Ending ","Insert Song"];
+    if(importData.length<1) return;
+    if(importData[0].gameMode) { console.log("gameMode exists"); return;}
+    let tempData=[];
+    let n=1;
+    for (let song of importData) {
+        let tempSong={};
+        tempSong.gameMode="Solo";
+        tempSong.name=song.songName;
+        tempSong.artist=song.songArtist;
+        tempSong.anime={};
+        tempSong.anime.english=song.animeEnglishName;
+        tempSong.anime.romaji=song.animeRomajiName;
+        tempSong.annId=song.annId;
+        tempSong.songNumber=n++;
+        tempSong.activePlayers=1;
+        tempSong.totalPlayers=1;
+        tempSong.type=strType[song.songType-1]+(song.songTypeNumber?song.songTypeNumber:"");
+        tempSong.urls={};
+        tempSong.urls.catbox={};
+        tempSong.urls.catbox["0"]=song.audio;
+        tempSong.siteIds={};
+        tempSong.siteIds.annId=song.annId;
+        tempSong.difficulty=song.songDifficulty;
+        tempSong.animeType=song.animeType;
+        tempSong.animeScore=0;
+        tempSong.vintage=song.animeVintage;
+        tempSong.tags=song.animeTags;
+        tempSong.genre=song.animeGenre;
+        tempSong.altAnswers=song.altAnimeNames;
+        tempSong.startSample=0;
+        tempSong.videoLength=80;
+        tempSong.players=[];
+        tempSong.fromList=[];
+        tempSong.correct=true;
+        tempSong.selfAnswer="...";
+
+        tempData.push(tempSong);
+    }
+    importData=tempData;
+}
+
 function openSongList(file) {
 	let reader = new FileReader();
 	reader.onload = function () {
 	    try {
 	        //importData = convertJson(JSON.parse(reader.result.replace(/files\.catbox\.moe/g,'nl\.catbox\.moe')));
             importData = convertJson(JSON.parse(reader.result));
+            convertData();
 	        $("#slInfo").hide();
 	        $("#slScoreboard").hide();
 	        loadData();
