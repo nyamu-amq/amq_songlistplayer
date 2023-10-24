@@ -98,16 +98,16 @@ function convertData() {
     for (let song of importData) {
         let tempSong={};
         tempSong.gameMode="Solo";
-        tempSong.name=song.songName;
+        tempSong.name=song.name?song.name:song.songName;
         tempSong.artist=song.songArtist;
         tempSong.anime={};
-        tempSong.anime.english=song.animeEnglishName;
-        tempSong.anime.romaji=song.animeRomajiName;
+        tempSong.anime.english=song.animeEnglishName?song.animeEnglishName:song.animeENName;
+        tempSong.anime.romaji=song.animeRomajiName?song.animeRomajiName:song.animeJPName;
         tempSong.annId=song.annId;
         tempSong.songNumber=n++;
         tempSong.activePlayers=1;
         tempSong.totalPlayers=1;
-        tempSong.type=strType[song.songType-1]+(song.songTypeNumber?song.songTypeNumber:"");
+        tempSong.type=song.animeJPName?song.songType:strType[song.songType-1]+(song.songTypeNumber?song.songTypeNumber:"");
         tempSong.urls={};
         tempSong.urls.catbox={};
         tempSong.urls.catbox["0"]=song.audio;
@@ -119,7 +119,7 @@ function convertData() {
         tempSong.vintage=song.animeVintage;
         tempSong.tags=song.animeTags;
         tempSong.genre=song.animeGenre;
-        tempSong.altAnswers=song.altAnimeNames;
+        tempSong.altAnswers=song.altAnimeNames?song.altAnimeNames:song.animeAltName;
         tempSong.startSample=0;
         tempSong.videoLength=80;
         tempSong.players=[];
