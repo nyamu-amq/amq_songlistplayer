@@ -381,7 +381,7 @@ function clearScoreboard() {
 }
 
 function formatUrl(src) {
-	return src?"https://nl.catbox.moe/"+(src.replace(/^.*\//, '')):src;
+	return src?"https://"+$("#slHost").val()+"/"+(src.replace(/^.*\//, '')):src;
 }
 
 function play(song, starttime) {
