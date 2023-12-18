@@ -1,6 +1,6 @@
 # amq_songlistplayer
 
-based on https://github.com/TheJoseph98/AMQ-Song-List-Viewer
+based on https://github.com/joske2865/AMQ-Song-List-Viewer
 
 added function to play song when you clicked a song.
 
