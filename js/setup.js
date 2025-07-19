@@ -97,31 +97,44 @@ function convertData() {
     let n=1;
     for (let song of importData) {
         let tempSong={};
+        if(song.anime) {
+            tempSong.anime=song.anime;
+            tempSong.urls={};
+            tempSong.urls.catbox={};
+            tempSong.urls.catbox["0"]=song.videoUrl;
+            tempSong.startSample=song.startSample;
+            tempSong.videoLength=song.videoLength;
+            tempSong.animeScore=song.animeScore;
+            tempSong.activePlayers=1;
+            tempSong.totalPlayers=1;
+        }
+        else {
+            tempSong.anime={};
+            tempSong.anime.english=song.animeEnglishName?song.animeEnglishName:song.animeENName;
+            tempSong.anime.romaji=song.animeRomajiName?song.animeRomajiName:song.animeJPName;
+            tempSong.urls={};
+            tempSong.urls.catbox={};
+            tempSong.urls.catbox["0"]=song.audio;
+            tempSong.startSample=0;
+            tempSong.videoLength=80;
+            tempSong.animeScore=0;
+            tempSong.activePlayers=1;
+            tempSong.totalPlayers=1;
+        }
         tempSong.gameMode="Solo";
         tempSong.name=song.name?song.name:song.songName;
         tempSong.artist=song.songArtist;
-        tempSong.anime={};
-        tempSong.anime.english=song.animeEnglishName?song.animeEnglishName:song.animeENName;
-        tempSong.anime.romaji=song.animeRomajiName?song.animeRomajiName:song.animeJPName;
         tempSong.annId=song.annId;
         tempSong.songNumber=n++;
-        tempSong.activePlayers=1;
-        tempSong.totalPlayers=1;
         tempSong.type=song.animeJPName?song.songType:strType[song.songType-1]+(song.songTypeNumber?song.songTypeNumber:"");
-        tempSong.urls={};
-        tempSong.urls.catbox={};
-        tempSong.urls.catbox["0"]=song.audio;
         tempSong.siteIds={};
         tempSong.siteIds.annId=song.annId;
         tempSong.difficulty=song.songDifficulty;
         tempSong.animeType=song.animeType;
-        tempSong.animeScore=0;
         tempSong.vintage=song.animeVintage;
         tempSong.tags=song.animeTags;
         tempSong.genre=song.animeGenre;
         tempSong.altAnswers=song.altAnimeNames?song.altAnimeNames:song.animeAltName;
-        tempSong.startSample=0;
-        tempSong.videoLength=80;
         tempSong.players=[];
         tempSong.fromList=[];
         tempSong.correct=true;
@@ -161,41 +174,69 @@ function openSongList(file) {
 }
 
 function convertJson(listdata) {
+    if(!Array.isArray(listdata)) listdata=listdata['songs'];
     for(var i=0;i<listdata.length;i++) {
         listdata[i]=convertSong(listdata[i]);
     }
     return listdata;
 }
 function convertSong(data) {
-    if(data.animeEng) {
-        data.anime={english:data.animeEng,romaji:data.animeRomaji};
-        data.animeEng=undefined;
-        data.animeRomaji=undefined;
+    if(data.songInfo) {
+        var songinfo=data.songInfo;
+        data.anime={english:songinfo.animeNames.english,romaji:songinfo.animeNames.romaji};
+        data.songInfo.animeNames=undefined;
+        data.name=songinfo.songName;
+        data.songArtist=songinfo.artist;
+        data.songType=songinfo.type;
+        data.songTypeNumber=songinfo.typeNumber;
+        data.startSample=data.startPoint;
+
+        data.songDifficulty=data.animeDifficulty;
+
+        data.animeType=songinfo.animeType;
+        data.animeScore=songinfo.animeScore;
+        data.vintage=songinfo.vintage;
+        data.tags=songinfo.animeTags;
+        data.animeGenre=songinfo.animeGenre;
+        data.altAnimeNames=songinfo.altAnimeNames;
+        data.players=songinfo.correctGuessPlayers;
+        data.fromList=songinfo.listStates;
+        data.correct=songinfo.correctGuess;
+        data.selfAnswer=songinfo.answer;
+
+        data.songInfo=undefined;
     }
-    if(data.songName) {
-        data.name=data.songName;
-        data.songName=undefined;
-    }
-    if(data.activePlayerCount) {
-        data.activePlayers=data.totalPlayers=data.activePlayerCount;
-        data.activePlayerCount=undefined;
-    }
-    if(data.LinkVideo) {
-        data.urls={catbox:{0:data.LinkMp3,720:data.LinkVideo}};
-        data.LinkMp3=undefined;
-        data.LinkVideo=undefined;
-    }
-    if(data.songDuration) {
-        data.videoLength=data.songDuration;
-        data.startSample=data.startTime;
-        data.songDuration=undefined;
-        data.startTime=undefined;
-    }
-    if(data.players==undefined) {
-        data.players=[];
-    }
-    if(data.fromList==undefined) {
-        data.fromList=[];
+    else {
+        if(data.animeEng) {
+            data.anime={english:data.animeEng,romaji:data.animeRomaji};
+            data.animeEng=undefined;
+            data.animeRomaji=undefined;
+        }
+        if(data.songName) {
+            data.name=data.songName;
+            data.songName=undefined;
+        }
+        if(data.activePlayerCount) {
+            data.activePlayers=data.totalPlayers=data.activePlayerCount;
+            data.activePlayerCount=undefined;
+        }
+        if(data.LinkVideo) {
+            data.urls={catbox:{0:data.LinkMp3,720:data.LinkVideo}};
+            data.LinkMp3=undefined;
+            data.LinkVideo=undefined;
+        }
+        if(data.songDuration) {
+            data.videoLength=data.songDuration;
+            data.startSample=data.startTime;
+            data.songDuration=undefined;
+            data.startTime=undefined;
+        }
+        if(data.players==undefined) {
+            data.players=[];
+        }
+        if(data.fromList==undefined) {
+            data.fromList=[];
+        }
     }
 
     return data;
