@@ -290,7 +290,6 @@ function convertSong(data) {
             data.fromList=[];
         }
     }
-    console.log(data);
     return data;
 }
 
