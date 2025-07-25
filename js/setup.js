@@ -89,8 +89,8 @@ function uploadFiles(e){
 	openSongList(files[0]);
 }
 
+let strType=["Opening ","Ending ","Insert Song"];
 function convertData() {
-    let strType=["Opening ","Ending ","Insert Song"];
     if(importData.length<1) return;
     if(importData[0].gameMode) { console.log("gameMode exists"); return;}
     let tempData=[];
@@ -173,8 +173,39 @@ function openSongList(file) {
 	reader.readAsText(file);
 }
 
+var playersforamqhistory=[];
+var gamemodeforamqhistory="";
+
 function convertJson(listdata) {
-    if(!Array.isArray(listdata)) listdata=listdata['songs'];
+    if(!Array.isArray(listdata)) {
+        gamemodeforamqhistory="Standard";//listdata.roomName;
+        listdata=listdata['songs'];
+        playersforamqhistory=[];
+        var tempplayers=new Set();
+        for(let tempdata of listdata) {
+            for(let tempplayer of tempdata.correctGuessPlayers) {
+                tempplayers.add(tempplayer);
+            }
+            for(let tempplayer of tempdata.listStates) {
+                tempplayers.add(tempplayer.name);
+            }
+        }
+        let pos=1;
+        let slot=0;
+        for(let tempplayer of tempplayers) {
+            var tempplayerdata={
+                "name":tempplayer,
+                "score":0,
+                "correctGuesses":0,
+                "correct":false,
+                "answer":"",
+                "active":true,
+                "position":pos++,
+                "positionSlot":slot++
+            };
+            playersforamqhistory.push(tempplayerdata);
+        }
+    }
     for(var i=0;i<listdata.length;i++) {
         listdata[i]=convertSong(listdata[i]);
     }
@@ -183,13 +214,16 @@ function convertJson(listdata) {
 function convertSong(data) {
     if(data.songInfo) {
         var songinfo=data.songInfo;
+        data.gameMode=gamemodeforamqhistory;
         data.anime={english:songinfo.animeNames.english,romaji:songinfo.animeNames.romaji};
-        data.songInfo.animeNames=undefined;
+        delete data.songInfo.animeNames;
         data.name=songinfo.songName;
-        data.songArtist=songinfo.artist;
-        data.songType=songinfo.type;
-        data.songTypeNumber=songinfo.typeNumber;
+        data.artist=songinfo.artist;
+        data.type=strType[songinfo.type-1]+(songinfo.typeNumber?songinfo.typeNumber:"");
         data.startSample=data.startPoint;
+        data.urls={};
+        data.urls.catbox={};
+        data.urls.catbox["0"]=data.videoUrl;
 
         data.songDifficulty=data.animeDifficulty;
 
@@ -199,37 +233,55 @@ function convertSong(data) {
         data.tags=songinfo.animeTags;
         data.animeGenre=songinfo.animeGenre;
         data.altAnimeNames=songinfo.altAnimeNames;
-        data.players=songinfo.correctGuessPlayers;
-        data.fromList=songinfo.listStates;
-        data.correct=songinfo.correctGuess;
-        data.selfAnswer=songinfo.answer;
+        data.activePlayers=data.totalPlayers=playersforamqhistory.length;
+        for(let correctplayer of data.correctGuessPlayers) {
+            var tempplayer=playersforamqhistory.find(player=>player.name===correctplayer);
+            tempplayer.score++;
+            tempplayer.correctGuesses++;
+        }
+        data.players=structuredClone(playersforamqhistory);
+        for(let correctplayer of data.correctGuessPlayers) {
+            var tempplayer=data.players.find(player=>player.name===correctplayer);
+            tempplayer.correct=true;
+        }
+        delete data.correctGuessPlayers;
+        data.fromList=data.listStates;
+        for(let liststat of data.fromList) {
+            liststat.listStatus=liststat.status;
+            delete liststat.status;
+        }
+        delete data.listStates;
+        data.correct=data.correctGuessPlayers;
+        delete data.correctGuess;
+        data.selfAnswer=data.answer;
+        delete data.answer;
 
-        data.songInfo=undefined;
+        delete data.songInfo;
     }
     else {
         if(data.animeEng) {
             data.anime={english:data.animeEng,romaji:data.animeRomaji};
-            data.animeEng=undefined;
-            data.animeRomaji=undefined;
+            delete data.animeEng;
+            delete data.animeRomaji;
         }
         if(data.songName) {
             data.name=data.songName;
-            data.songName=undefined;
+            delete data.songName;
         }
         if(data.activePlayerCount) {
             data.activePlayers=data.totalPlayers=data.activePlayerCount;
-            data.activePlayerCount=undefined;
+            delete data.activePlayerCount;
         }
         if(data.LinkVideo) {
             data.urls={catbox:{0:data.LinkMp3,720:data.LinkVideo}};
-            data.LinkMp3=undefined;
-            data.LinkVideo=undefined;
+            delete data.LinkMp3undefined;
+            delete data.LinkVideoundefined;
         }
         if(data.songDuration) {
             data.videoLength=data.songDuration;
             data.startSample=data.startTime;
-            data.songDuration=undefined;
-            data.startTime=undefined;
+            delete data.songDuration;
+            delete data.startTime;
         }
         if(data.players==undefined) {
             data.players=[];
@@ -238,7 +290,7 @@ function convertSong(data) {
             data.fromList=[];
         }
     }
-
+    console.log(data);
     return data;
 }
 
